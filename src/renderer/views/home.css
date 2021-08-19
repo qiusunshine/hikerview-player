@@ -1,0 +1,10 @@
+.home .chapter-item button{
+    margin: 5px 3px;
+    width: 100%;
+    overflow: hidden;
+}
+.home .chapter-float{
+    position: absolute;
+    left: 30px;
+    top: 30px
+}

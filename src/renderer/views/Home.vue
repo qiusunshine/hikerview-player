@@ -45,6 +45,7 @@
 
 <script>
 import axios from 'axios'
+import './home.css'
 import VideoPlayer from '@/components/VideoPlayer/index'
 import { remote, ipcRenderer } from 'electron'
 import { URL } from 'url'
