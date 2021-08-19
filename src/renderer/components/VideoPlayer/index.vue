@@ -15,6 +15,8 @@ import videojshotkeys from 'videojs-hotkeys'
 import hls from 'videojs-contrib-hls'
 import './videojs-resume'
 import './videojs-resume.css'
+import './videojs-playlist'
+import './videojs-playlist.css'
 
 window.videojs = videojs
 require('video.js/dist/lang/zh-CN.js')

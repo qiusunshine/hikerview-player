@@ -28,6 +28,18 @@
       </span>
       <span> </span>
     </el-dialog>
+    <el-dialog
+        title="选集"
+        :visible.sync="chapter.visible"
+        fullscreen
+    >
+      <el-row :gutter="20" justify="space-around">
+        <el-col :span="6" v-for="(item, index) in playList" :key="item + '_' + index" class="chapter-item">
+          <el-button v-if="playTitle.length > 0 && playTitle.indexOf(item) >= 0" @click="playMe(item, index)" type="primary" plain>{{item}}</el-button>
+          <el-button v-else @click="playMe(item, index)" plain>{{item}}</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -46,6 +58,7 @@ export default {
       visible: true,
       ipAddress: '',
       playUrl: '',
+      playTitle: '',
       videoOptions: {
         language: 'zh-CN',
         autoplay: true,
@@ -58,7 +71,12 @@ export default {
           //   type: 'video/mp4'
           // }
         ]
-      }
+      },
+      player: null,
+      chapter: {
+        visible: false
+      },
+      playList: []
     }
   },
   components: {
@@ -78,6 +96,7 @@ export default {
   },
   methods: {
     videoReady (player) {
+      this.player = player
       player.on('loadedmetadata', () => {
         player.currentTime(this.jumpStartDuration)
       })
@@ -92,6 +111,10 @@ export default {
         title: '恢复上次播放进度？',
         resumeButtonText: '是',
         cancelButtonText: '否'
+      })
+      player.videoJsPlaylist({})
+      player.on('playlistBtnClick', () => {
+        this.showChapters()
       })
     },
     setHeaders (headers) {
@@ -120,6 +143,7 @@ export default {
           })
           .then((res) => {
             this.playUrl = res.data.url
+            this.playTitle = res.data.title
             this.jumpStartDuration = res.data.jumpStartDuration
             this.jumpEndDuration = res.data.jumpEndDuration
             this.setHeaders(res.data.headers || {})
@@ -160,6 +184,7 @@ export default {
             .then((res) => {
               if (_this.playUrl !== res.data.url) {
                 _this.playUrl = res.data.url
+                _this.playTitle = res.data.title
                 _this.setHeaders(res.data.headers || {})
                 if (_this.playUrl.indexOf('.m3u8') !== -1) {
                   _this.videoOptions.sources = [{
@@ -182,6 +207,47 @@ export default {
       this.$once('hook:beforeDestroy', () => {
         clearInterval(timer)
       })
+    },
+    playMe (title, index) {
+      let _this = this
+      axios
+        .get(`http://${this.ipAddress}:52020/playMe`, {
+          params: {
+            title,
+            index
+          }
+        })
+        .then((res) => {
+          if (res.data) {
+            _this.chapter = {
+              ..._this.chapter,
+              visible: false
+            }
+            _this.player && _this.player.requestFullscreen()
+          } else {
+            _this.$message('播放失败，请检查手机是否还在播放器界面')
+          }
+        })
+        .catch((e) => {
+          _this.$message('播放失败，请检查手机是否还在播放器界面')
+        })
+    },
+    showChapters () {
+      let _this = this
+      axios
+        .get(`http://${this.ipAddress}:52020/getPlayList`, {
+          params: {}
+        })
+        .then((res) => {
+          _this.playList = res.data
+          _this.chapter = {
+            ..._this.chapter,
+            visible: true
+          }
+        })
+        .catch((e) => {
+          _this.$message('获取集数列表失败，请检查手机是否还在播放器界面')
+        })
     }
   }
 }
