@@ -47,7 +47,6 @@ const videoJsResolutionSwitcher = function (this: any, options: any) {
     const ele = menuButton.createEl()
     ele.addEventListener('click', function () {
       console.log('handleClick')
-      player.exitFullscreen()
       player.trigger('playlistBtnClick')
     })
     player.controlBar.resolutionSwitcher = player.controlBar.el_.insertBefore(ele, player.controlBar.getChild('fullscreenToggle').el_)

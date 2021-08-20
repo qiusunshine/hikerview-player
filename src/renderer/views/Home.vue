@@ -245,6 +245,15 @@ export default {
             ..._this.chapter,
             visible: true
           }
+          if (_this.player && _this.player.isFullscreen()) {
+            try {
+              _this.player.exitFullscreen()
+              ipcRenderer.send('changeSize', -1, -1)
+            } catch (e) {
+              this.$message.error('糟糕...发生了一些错误')
+              console.error(e)
+            }
+          }
         })
         .catch((e) => {
           _this.$message('获取集数列表失败，请检查手机是否还在播放器界面')

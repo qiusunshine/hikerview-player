@@ -21,7 +21,7 @@ class LifeCycle {
     // fix the $PATH in macOS
     fixPath()
     beforeOpen()
-    ipcList.listen()
+    ipcList.listen(windowManager)
   }
   private onReady () {
     app.on('ready', async () => {
