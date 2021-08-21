@@ -29,7 +29,7 @@
       <span> </span>
     </el-dialog>
     <el-dialog
-        title="选集（按Tab键播放下一集）"
+        title="选集（按键盘上N键播放下一集）"
         :visible.sync="chapter.visible"
         fullscreen
     >
