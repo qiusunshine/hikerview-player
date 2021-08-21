@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <video-player @ready="videoReady" class="videoPlayer" style="height: 100vh; width: 100vw" :options="videoOptions" @keyup.tab.native="playNext"/>
+    <video-player @ready="videoReady" class="videoPlayer" style="height: 100vh; width: 100vw" :options="videoOptions" @keyup.78.native="playNext"/>
     <el-dialog
       :show-close="false"
       :close-on-press-escape="false"
