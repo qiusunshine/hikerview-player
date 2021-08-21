@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <video-player @ready="videoReady" class="videoPlayer" style="height: 100vh; width: 100vw" :options="videoOptions"/>
+    <video-player @ready="videoReady" class="videoPlayer" style="height: 100vh; width: 100vw" :options="videoOptions" @keyup.tab.native="playNext"/>
     <el-dialog
       :show-close="false"
       :close-on-press-escape="false"
@@ -29,7 +29,7 @@
       <span> </span>
     </el-dialog>
     <el-dialog
-        title="选集"
+        title="选集（按Tab键播放下一集）"
         :visible.sync="chapter.visible"
         fullscreen
     >
@@ -257,6 +257,27 @@ export default {
         })
         .catch((e) => {
           _this.$message('获取集数列表失败，请检查手机是否还在播放器界面')
+        })
+    },
+    playNext () {
+      console.log('playNext')
+      let _this = this
+      axios
+        .get(`http://${this.ipAddress}:52020/playNext`, {
+          params: {}
+        })
+        .then((res) => {
+          if (_this.chapter.visible) {
+            _this.chapter = {
+              ..._this.chapter,
+              visible: false
+            }
+            _this.player && _this.player.requestFullscreen()
+          }
+          _this.$message('播放下一集')
+        })
+        .catch((e) => {
+          _this.$message('播放下一集失败，请检查手机是否还在播放器界面')
         })
     }
   }
