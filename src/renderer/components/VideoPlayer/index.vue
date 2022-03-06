@@ -14,9 +14,12 @@ import './custom-theme.css'
 import videojshotkeys from 'videojs-hotkeys'
 import hls from 'videojs-contrib-hls'
 import './videojs-resume'
+import './videojs-message'
+import './videojs-message.css'
 import './videojs-resume.css'
 import './videojs-playlist'
 import './videojs-playlist.css'
+import './videojs-live'
 
 window.videojs = videojs
 require('video.js/dist/lang/zh-CN.js')
@@ -204,9 +207,36 @@ export default {
           })
           // player readied
           self.$emit('ready', this)
+          if (videoOptions._subtitle) {
+            this.addRemoteTextTrack({
+              src: videoOptions._subtitle,
+              kind: 'subtitles',
+              label: '外挂字幕',
+              srclang: 'zh',
+              mode: 'showing',
+              default: true
+            }, false)
+          }
         })
       } else {
+        let rate = this.player.playbackRate()
         this.player.src(videoOptions.sources)
+        let p = this.player
+        this.player.ready(function () {
+          setTimeout(function () {
+            p.playbackRate(rate)
+          }, 20)
+          if (videoOptions._subtitle) {
+            p.addRemoteTextTrack({
+              src: videoOptions._subtitle,
+              kind: 'subtitles',
+              label: '外挂字幕',
+              srclang: 'zh',
+              mode: 'showing',
+              default: true
+            }, false)
+          }
+        })
       }
     },
     dispose (callback) {
@@ -241,8 +271,10 @@ export default {
       handler (options, oldOptions) {
         if (options && options.sources && options.sources.length) {
           if (oldOptions != null && oldOptions.sources != null && oldOptions.sources.length) {
+            console.log('update')
             this.initialize(true)
           } else {
+            console.log('initialize')
             this.dispose(() => {
               this.initialize()
             })

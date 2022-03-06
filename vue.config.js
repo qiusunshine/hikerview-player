@@ -27,7 +27,7 @@ module.exports = {
       },
       builderOptions: {
         appId: 'com.Lingyan000.hikerviewplayer',
-        productName: '海阔视界播放器',
+        productName: '波澜播放器',
         publish: [
           {
             provider: 'github',
@@ -73,7 +73,7 @@ module.exports = {
         nsis: {
           oneClick: false, // 是否一键安装
           allowToChangeInstallationDirectory: true, // 允许修改安装目录
-          shortcutName: '海阔视界播放器' // 图标名称
+          shortcutName: '波澜播放器' // 图标名称
         },
         linux: {
           icon: 'build/icons/'

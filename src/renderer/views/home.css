@@ -8,3 +8,6 @@
     left: 30px;
     top: 30px
 }
+.home .el-menu {
+    height: 100vh;
+}

@@ -11,10 +11,32 @@ import { IWindowList } from 'apis/app/window/constants'
 export default {
   listen (windowManager: IWindowManager) {
     ipcMain.on(
+      'startListen',
+      async (evt: IpcMainEvent) => {
+        try {
+          console.log('startListen')
+          session.defaultSession.webRequest.onCompleted({
+            urls: [`*://*:*/*`]
+          }, (details) => {
+            try {
+              if (details.url.includes('/playUrl?e')) {
+                return
+              }
+              console.log('onCompleted', details.url)
+            } catch (e) {
+            }
+          })
+        } catch (e) {
+          console.log('onCompleted', e)
+        }
+      }
+    )
+    ipcMain.on(
       'uploadRequestHeaders',
       async (evt: IpcMainEvent, filter: Filter, headers) => {
         try {
           session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
+            // console.log('onBeforeSendHeaders', details.url)
             Object.keys(headers).forEach((key) => {
               details.requestHeaders[key] = headers[key].replace(/；；/g, ';').replace(/%%/g, ';').split('.js:')[0]
             })

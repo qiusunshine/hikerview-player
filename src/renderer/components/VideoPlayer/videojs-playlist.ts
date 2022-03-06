@@ -16,7 +16,7 @@ class ResolutionMenuButton extends Button {
 
     createEl () {
       return super.createEl('button', {
-        innerHTML: ''
+        innerHTML: '资源列表'
       })
     }
 
@@ -38,6 +38,7 @@ declare global {
         myPlayer: any;
     }
 }
+
 const videoJsResolutionSwitcher = function (this: any, options: any) {
   let player = this
 

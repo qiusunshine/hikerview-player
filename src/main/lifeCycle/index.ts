@@ -7,7 +7,7 @@ import fixPath from 'fix-path'
 import ipcList from '~/main/events/ipcList'
 import { IWindowList } from 'apis/app/window/constants'
 import windowManager from 'apis/app/window/windowManager'
-import updateChecker from '~/main/utils/updateChecker'
+// import updateChecker from '~/main/utils/updateChecker'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import db from '#/datastore'
 
@@ -38,7 +38,7 @@ class LifeCycle {
       }
       windowManager.create(IWindowList.MAIN_WINDOW)
       db.set('needReload', false)
-      updateChecker()
+      // updateChecker()
     })
   }
   private onRunning () {

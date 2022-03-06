@@ -1,0 +1,11 @@
+.vjs-default-skin .vjs-msg-modal {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  margin: 0 auto;
+  padding: 10px 0;
+  font-size: 14px;
+  border-radius: 10px;
+  text-align: center;
+}

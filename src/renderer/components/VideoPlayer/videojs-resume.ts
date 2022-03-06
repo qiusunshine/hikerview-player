@@ -107,6 +107,9 @@ class ResumeModal extends ModalDialog {
       resumeFromTime: options.resumeFromTime,
       key: options.key
     })
+    setTimeout(() => {
+      this.opened(false)
+    }, 10000)
   }
 
   buildCSSClass () {
@@ -120,25 +123,54 @@ videojs.registerComponent('ResumeModal', ResumeModal)
 
 const Resume = function (this: any, options: any) {
   let videoId = options.uuid
+  let key = 'videojs-resume:' + videoId
+
+  function getKey () {
+    if (options.getUuid) {
+      return 'videojs-resume:' + options.getUuid()
+    } else {
+      return 'videojs-resume:' + videoId
+    }
+  }
+
+  this.on('timeupdate', function () {
+    // @ts-ignore
+    let time = this.currentTime()
+    if (time < 120) {
+      return
+    }
+    key = getKey()
+    // console.log('timeupdate: ', time)
+    db.set(`resume[${key.replace(/\./g, '_')}]`, time)
+  })
+
+  this.on('ended', function () {
+    db.read().unset(`resume[${key.replace(/\./g, '_')}]`).write()
+  })
+}
+
+const ResumeNow = function (this: any, options: any) {
+  let videoId = options.uuid
   let title = options.title || 'Resume from where you left off?'
   let resumeButtonText = options.resumeButtonText || 'Resume'
   let cancelButtonText = options.cancelButtonText || 'No Thanks'
   let playbackOffset = options.playbackOffset || 0
   let key = 'videojs-resume:' + videoId
 
-  this.on('timeupdate', function () {
-    // @ts-ignore
-    db.set(`resume[${key.replace(/\./g, '_')}]`, this.currentTime())
-  })
-
-  this.on('ended', function () {
-    db.read().unset(`resume[${key.replace(/\./g, '_')}]`).write()
-  })
+  function getKey () {
+    if (options.getUuid) {
+      return 'videojs-resume:' + options.getUuid()
+    } else {
+      return 'videojs-resume:' + videoId
+    }
+  }
 
   this.ready(function () {
+    key = getKey()
     let resumeFromTime:number = db.get(`resume.${key.replace(/\./g, '_')}`) as number
+    console.log('resumeFromTime: ', resumeFromTime, key)
 
-    if (resumeFromTime) {
+    if (resumeFromTime && resumeFromTime > 180) {
       if (resumeFromTime >= 5) {
         resumeFromTime -= playbackOffset
       }
@@ -158,3 +190,4 @@ const Resume = function (this: any, options: any) {
 }
 
 videojs.plugin('Resume', Resume)
+videojs.plugin('ResumeNow', ResumeNow)

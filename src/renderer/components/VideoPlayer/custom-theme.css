@@ -178,3 +178,32 @@
   .vjs-custom-skin > .video-js .vjs-control-bar .vjs-fullscreen-control {
     order: 6;
   }
+  .dark-dialog {
+    background-color: #333;
+  }
+  .chapter-dialog {
+    background-color: #222;
+  }
+  .dark-dialog .el-dialog__title {
+    color: white !important;
+  }
+  .dark-dialog .el-dialog__headerbtn .el-dialog__close {
+    color: white !important;
+  }
+  .dark-dialog .el-button--info {
+    background-color: #80000000 !important;
+  }
+
+.video-js .vjs-control-bar {
+  background-color: #333 !important;
+  color: #ffffff;
+  font-size: 13px
+}
+
+.vjs-text-track-cue {
+  background-color: rgba(0, 0, 0, 0) !important;
+  /*font: 20px sans-serif !important;*/
+}
+.vjs-text-track-cue > div {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
