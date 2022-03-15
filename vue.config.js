@@ -1,4 +1,5 @@
 const path = require('path')
+const pkg = require('./package.json')
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -31,7 +32,7 @@ module.exports = {
         publish: [
           {
             provider: 'github',
-            owner: 'Lingyan000',
+            owner: pkg.release.owner,
             repo: 'hikerview-player',
             releaseType: 'draft'
           }
