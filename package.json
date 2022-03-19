@@ -1,6 +1,12 @@
 {
   "name": "hikerview-player",
   "version": "2.0.2",
+  "release": {
+    "owner": "RebornQ",
+    "releaseUrl": "https://api.github.com/repos/RebornQ/hikerview-player/releases/latest",
+    "releaseUrlBackup": "https://cdn.jsdelivr.net/gh/RebornQ/hikerview-player@latest/package.json",
+    "downloadUrl": "https://github.com/RebornQ/hikerview-player/releases/latest"
+  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

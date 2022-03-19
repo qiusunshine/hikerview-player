@@ -4,12 +4,9 @@ import axios from 'axios'
 import pkg from 'root/package.json'
 import { lt } from 'semver'
 const version = pkg.version
-const releaseUrl =
-  'https://api.github.com/repos/Lingyan000/hikerview-player/releases/latest'
-const releaseUrlBackup =
-  'https://cdn.jsdelivr.net/gh/Lingyan000/hikerview-player@latest/package.json'
-const downloadUrl =
-  'https://github.com/Lingyan000/hikerview-player/releases/latest'
+const releaseUrl = pkg.release.releaseUrl
+const releaseUrlBackup = pkg.release.releaseUrlBackup
+const downloadUrl = pkg.release.downloadUrl
 
 const checkVersion = async () => {
   let showTip = db.get('settings.showUpdateTip')
